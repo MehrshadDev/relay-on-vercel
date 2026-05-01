@@ -37,9 +37,8 @@ export async function POST(request: Request) {
     }
 
     // 4. جلوگیری از self-fetch (درخواست به خودمان)
-    const WORKER_URL = process.env.WORKER_URL || new URL(request.url).hostname;
-    const BLOCKED_HOSTS = [WORKER_URL];
-    if (BLOCKED_HOSTS.some(h => targetUrl.hostname.endsWith(h))) {
+    const currentHost = new URL(request.url).hostname;
+    if (currentHost === targetUrl.hostname) {
       return json({ e: 'self-fetch blocked' }, 400);
     }
 
